@@ -1,7 +1,11 @@
 import React from 'react';
 import TodoList from '../components/TodoList';
+import { connectModule } from 'redux-modules';
+import * as todoModule from '../modules/todos/reducer';
 
-export default class TodoHandler extends React.Component {
+const selector = state => { return { todoList: { collection: state.todoList } } };
+
+class TodoHandler extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
   }
@@ -12,7 +16,9 @@ export default class TodoHandler extends React.Component {
 
   render() {
     return (
-      <TodoList/>
+      <TodoList todos={this.props.todos}/>
     );
   }
 }
+
+export default connectModule(selector, todoModule)(TodoHandler);
