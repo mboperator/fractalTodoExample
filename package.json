@@ -41,10 +41,12 @@
     "webpack-dev-server": "^1.12.1"
   },
   "dependencies": {
+    "immutable": "^3.8.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
     "redux-modules": "^0.4.1",
     "redux-saga": "^0.10.5"
   }
