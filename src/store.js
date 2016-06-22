@@ -1,6 +1,7 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { fromJS } from 'immutable';
+import { createStore, applyMiddleware } from 'redux';
+import { fromJS, Map } from 'immutable';
 import createLogger from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 
 const logger = createLogger({
   stateTransformer: object => fromJS(object).toJS(),
@@ -9,8 +10,15 @@ const logger = createLogger({
   logErrors: false,
 });
 
-const createStoreWithMiddleware = compose(
-  applyMiddleware(logger)
-)(createStore);
+const sagaMiddleware = createSagaMiddleware({});
 
-export default createStoreWithMiddleware(state => state, {});
+export default function generateStore() {
+  const store = createStore(
+    (state = Map()) => state,
+    applyMiddleware(logger, sagaMiddleware)
+  );
+  return {
+    ...store,
+    runSaga: sagaMiddleware.run,
+  };
+}
