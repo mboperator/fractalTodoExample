@@ -16,7 +16,7 @@ class TodoHandler extends React.Component {
 
   render() {
     return (
-      <TodoList todos={this.props.todos}/>
+      <TodoList todos={this.props.todoList}/>
     );
   }
 }

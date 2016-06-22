@@ -43,6 +43,9 @@ export default class TodoList extends React.Component {
         </div>
 
         <ul>
+          {collection.map(todo =>
+            <TodoItem {...todo} />
+          )}
         </ul>
       </div>
     );

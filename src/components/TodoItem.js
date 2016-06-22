@@ -1,3 +1,5 @@
+import React from 'react';
+
 const TodoItem = ({id, title, description, checked}) =>
   <li>
     <div className="checkbox">
