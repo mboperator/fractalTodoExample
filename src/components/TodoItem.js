@@ -8,8 +8,8 @@ const TodoItem = ({id, title, description, checked, todo: { actions }}) =>
     <div className="checkbox">
       <input
         onChange={e =>
-          actions.setName({
-            name: 'Bob',
+          actions.setDescription({
+            description: 'Bob',
           })
         }
         type='checkbox'
@@ -20,7 +20,7 @@ const TodoItem = ({id, title, description, checked, todo: { actions }}) =>
       {description}
     </p>
     <aside>
-      <button onClick={() => actions.destroy({index: i})}>
+      <button onClick={() => actions.destroy()}>
         Delete Todo
       </button>
     </aside>

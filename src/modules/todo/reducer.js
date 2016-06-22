@@ -27,10 +27,10 @@ export const { actions, reducer, constants, name } = createModule({
       },
     },
     {
-      action: 'SET_NAME',
+      action: 'SET_DESCRIPTION',
       payloadTypes: { },
-      reducer: (state, {payload: { name }}) => {
-        return { ...state, name };
+      reducer: (state, {payload: { description }}) => {
+        return { ...state, description };
       },
     },
 
