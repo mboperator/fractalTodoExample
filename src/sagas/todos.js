@@ -1,6 +1,6 @@
 import { takeLatest } from 'redux-saga';
 import { put, select } from 'redux-saga/effects';
-import todos from '../modules/todos';
+import todos from '../modules/todos/reducer';
 
 const { constants } = todos;
 
@@ -17,7 +17,7 @@ function* hydrate() {
 
 function* persist() {
   try {
-    const todos = yield select(state => state.todos);
+    const todos = yield select(state => state.todoList);
     yield storage.set('fractal_todos', JSON.stringify(todos.toJS()));
   } catch (e) {
     console.log('Persist!', e);
@@ -28,9 +28,10 @@ export default function* todosSaga() {
   yield [
     takeLatest(constants.hydrate, hydrate),
     takeLatest([
-      constants.create,
-      constants.update,
-      constants.destroy,
+      constants.addToList,
+      constants.init,
+      constants.removeFromList,
+      constants.performInList,
     ], persist),
   ];
 }
