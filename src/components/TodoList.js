@@ -10,9 +10,9 @@ export default class TodoList extends React.Component {
     todos: shape({
       collection: array,
       actions: shape({
-        create: func,
-        destroy: func,
-        update: func,
+        addToList: func,
+        removeFromList: func,
+        updateInList: func,
       }),
     }),
   };
@@ -33,8 +33,8 @@ export default class TodoList extends React.Component {
             type='button'
             value='Create'
             onClick={() => {
-              actions.create({
-                todo: {
+              actions.addToList({
+                params: {
                   description: findDOMNode(this.refs.description).value,
                 }
               })
