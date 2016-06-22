@@ -1,4 +1,4 @@
-export default const TodoItem = ({id, title, description, checked}) =>
+const TodoItem = ({id, title, description, checked}) =>
   <li>
     <div className="checkbox">
       <input
@@ -21,3 +21,5 @@ export default const TodoItem = ({id, title, description, checked}) =>
       </button>
     </aside>
   </li>
+
+export default TodoItem;

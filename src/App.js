@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ModuleProvider } from 'redux-modules';
 import generateStore from './store';
+import TodoHandler from './handlers/TodoHandler';
 // import todoSaga from './sagas/todos';
 
 const store = generateStore();
@@ -10,7 +11,7 @@ export default class App extends Component {
   render() {
     return (
       <ModuleProvider store={store}>
-        <h1>Hello, squirrels.</h1>
+        <TodoHandler/>
       </ModuleProvider>
     );
   }
