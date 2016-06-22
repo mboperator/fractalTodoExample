@@ -1,6 +1,7 @@
 import { createModule } from 'redux-modules';
 import { Map } from 'immutable';
 import v4 from 'uuid';
+import { set } from '../../utils/fp';
 
 const initialState = Map();
 
@@ -28,8 +29,8 @@ export const { actions, reducer, constants, name } = createModule({
     {
       action: 'SET_NAME',
       payloadTypes: { },
-      reducer: (state, {payload}) => {
-        return state.set('name', payload.name);
+      reducer: (state, {payload: { name }}) => {
+        return { ...state, name };
       },
     },
 
