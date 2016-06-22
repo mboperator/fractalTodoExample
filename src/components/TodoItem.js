@@ -1,13 +1,15 @@
 import React from 'react';
+import { connectModule } from 'redux-modules';
+import * as todoModule from '../modules/todo/reducer';
 
-const TodoItem = ({id, title, description, checked}) =>
+
+const TodoItem = ({id, title, description, checked, todo: { actions }}) =>
   <li>
     <div className="checkbox">
       <input
         onChange={e =>
-          actions.update({
-            index: i,
-            todo: {checked: e.target.checked},
+          actions.setName({
+            name: 'Bob',
           })
         }
         type='checkbox'
@@ -24,4 +26,4 @@ const TodoItem = ({id, title, description, checked}) =>
     </aside>
   </li>
 
-export default TodoItem;
+export default connectModule(state => {return {}}, todoModule)(TodoItem);

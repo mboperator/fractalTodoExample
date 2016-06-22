@@ -44,7 +44,9 @@ export default class TodoList extends React.Component {
 
         <ul>
           {collection.map(todo =>
-            <TodoItem {...todo} />
+            <TodoItem {...todo}
+              dispatch={action => actions.performInList({id: todo.id, action})}
+            />
           )}
         </ul>
       </div>
