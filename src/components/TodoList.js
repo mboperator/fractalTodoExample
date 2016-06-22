@@ -9,7 +9,8 @@ const { array, func, number, shape } = PropTypes;
 
 const selector = state => { return { todoList: { collection: state.todoList } } };
 
-class TodoList extends React.Component {
+@connectModule(selector, todoModule)
+export default class TodoList extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
@@ -58,4 +59,3 @@ class TodoList extends React.Component {
   }
 }
 
-export default connectModule(selector, todoModule)(TodoList);
