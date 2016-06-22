@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { ModuleProvider } from 'redux-modules';
-import store from './store';
+import generateStore from './store';
+// import todoSaga from './sagas/todos';
+
+const store = generateStore();
+// store.runSaga(todoSaga);
 
 export default class App extends Component {
   render() {
