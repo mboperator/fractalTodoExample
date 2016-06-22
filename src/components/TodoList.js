@@ -2,10 +2,14 @@ import React, { PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 import TodoItem from './TodoItem';
+import { connectModule } from 'redux-modules';
+import * as todoModule from '../modules/todos/reducer';
 
 const { array, func, number, shape } = PropTypes;
 
-export default class TodoList extends React.Component {
+const selector = state => { return { todoList: { collection: state.todoList } } };
+
+class TodoList extends React.Component {
   static propTypes = {
     todos: shape({
       collection: array,
@@ -18,7 +22,7 @@ export default class TodoList extends React.Component {
   };
 
   render() {
-    const { title, todos: todoProps = {} } = this.props;
+    const { title, todoList: todoProps = {} } = this.props;
     const { collection = [], actions } = todoProps ;
 
     return (
@@ -53,3 +57,5 @@ export default class TodoList extends React.Component {
     );
   }
 }
+
+export default connectModule(selector, todoModule)(TodoList);
