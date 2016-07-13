@@ -14,7 +14,7 @@ export const { actions, reducer, constants, name } = createModule({
       type: 'INIT',
       middleware: [
         (_, { payload, meta }) => ({
-          payload: { id: v4, ...payload },
+          payload: { id: v4(), ...payload },
           meta,
         }),
       ],

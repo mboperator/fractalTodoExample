@@ -2,15 +2,15 @@ import { createModule } from 'redux-modules';
 import { loop, Effects } from 'redux-loop';
 import { List } from 'immutable';
 import { get, getIn } from '../../utils/fp';
+import storage from '../../services/storage';
 
 export default function list({reducer, actions, name}) {
-  return createModule({
+  const module = createModule({
     name: `${name}List`,
     initialState: List(),
     transformations: [
       {
         type: 'INIT',
-        payloadTypes: { },
         reducer: (state, {payload: collection}) => {
           const { init } = actions;
           return loop(
@@ -24,30 +24,36 @@ export default function list({reducer, actions, name}) {
       },
       {
         type: 'PERFORM_IN_LIST',
-        payloadTypes: { },
         reducer: (state, {payload: {id, action}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
           const [nState] = reducer(state.get(idx), action);
+          const newParentState = state.set(idx, nState).set('_persisting', true);
           return loop(
-            state.set(idx, nState),
-            Effects.none()
+            newParentState,
+            Effects.promise(persist, newParentState)
           );
         },
       },
       {
+        type: 'PERSIST_SUCCESS',
+        reducer: state => loop(
+          state.set('_persisting', false),
+          Effects.none()
+        ),
+      },
+      {
         type: 'ADD_TO_LIST',
-        payloadTypes: { },
         reducer: (state, {payload: {params}}) => {
           const [nState] = reducer(undefined, actions.init(params));
+          const newParentState = state.push(nState);
           return loop(
-            state.push(nState),
-            Effects.none()
+            newParentState,
+            Effects.promise(persist, newParentState)
           );
         },
       },
       {
         type: 'REMOVE_FROM_LIST',
-        payloadTypes: { },
         reducer: (state, {payload: {id}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
           reducer(state.get(idx), actions.destroy());
@@ -59,4 +65,17 @@ export default function list({reducer, actions, name}) {
       },
     ],
   });
+
+  const persist = state => new Promise(
+    resolve =>
+      storage
+      .set('fractalTodos', state.toJS())
+      .then(() => {
+        const action = module.actions.persistSuccess({});
+        console.log('Persist', action);
+        resolve(action);
+      })
+    )
+
+  return module;
 }
