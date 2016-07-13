@@ -13,14 +13,10 @@ export const { actions, reducer, constants, name } = createModule({
     {
       type: 'INIT',
       middleware: [
-        (_, { payload, meta }) => {
-          const id = v4();
-          console.log('Middleware adding ID', id); // eslint-disable-line no-console
-          return {
-            payload: { id, ...payload },
-            meta,
-          };
-        },
+        (_, { payload, meta }) => ({
+          payload: { id: v4, ...payload },
+          meta,
+        }),
       ],
       reducer: (state, {payload}) => {
         return loop(

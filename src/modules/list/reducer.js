@@ -9,7 +9,7 @@ export default function list({reducer, actions, name}) {
     initialState: List(),
     transformations: [
       {
-        action: 'INIT',
+        type: 'INIT',
         payloadTypes: { },
         reducer: (state, {payload: collection}) => {
           const { init } = actions;
@@ -23,7 +23,7 @@ export default function list({reducer, actions, name}) {
         },
       },
       {
-        action: 'PERFORM_IN_LIST',
+        type: 'PERFORM_IN_LIST',
         payloadTypes: { },
         reducer: (state, {payload: {id, action}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
@@ -35,7 +35,7 @@ export default function list({reducer, actions, name}) {
         },
       },
       {
-        action: 'ADD_TO_LIST',
+        type: 'ADD_TO_LIST',
         payloadTypes: { },
         reducer: (state, {payload: {params}}) => {
           const [nState] = reducer(undefined, actions.init(params));
@@ -46,7 +46,7 @@ export default function list({reducer, actions, name}) {
         },
       },
       {
-        action: 'REMOVE_FROM_LIST',
+        type: 'REMOVE_FROM_LIST',
         payloadTypes: { },
         reducer: (state, {payload: {id}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
