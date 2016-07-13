@@ -1,4 +1,5 @@
 import { createModule } from 'redux-modules';
+import { loop, Effects } from 'redux-loop';
 import { List } from 'immutable';
 import { get, getIn } from '../../utils/fp';
 
@@ -12,7 +13,13 @@ export default function list({reducer, actions, name}) {
         payloadTypes: { },
         reducer: (state, {payload: collection}) => {
           const { init } = actions;
-          return List(collection.map( item => reducer(undefined, init(item))));
+          return loop(
+            List(collection.map( item => {
+              const [nState] = reducer(undefined, init(item));
+              return nState;
+            })),
+            Effects.none()
+          );
         },
       },
       {
@@ -20,14 +27,22 @@ export default function list({reducer, actions, name}) {
         payloadTypes: { },
         reducer: (state, {payload: {id, action}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
-          return state.set(idx, reducer(state.get(idx), action));
+          const [nState] = reducer(state.get(idx), action);
+          return loop(
+            state.set(idx, nState),
+            Effects.none()
+          );
         },
       },
       {
         action: 'ADD_TO_LIST',
         payloadTypes: { },
         reducer: (state, {payload: {params}}) => {
-          return state.push(reducer(undefined, actions.init(params)));
+          const [nState] = reducer(undefined, actions.init(params));
+          return loop(
+            state.push(nState),
+            Effects.none()
+          );
         },
       },
       {
@@ -36,7 +51,10 @@ export default function list({reducer, actions, name}) {
         reducer: (state, {payload: {id}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
           reducer(state.get(idx), actions.destroy());
-          return state.remove(idx);
+          return loop(
+            state.remove(idx),
+            Effects.none()
+          );
         },
       },
     ],

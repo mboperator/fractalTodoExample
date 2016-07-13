@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { combineReducers } from 'redux-loop';
 import { ModuleProvider } from 'redux-modules';
 import generateStore from './store';
 import TodoList from './components/TodoList';
@@ -10,7 +11,7 @@ const store = generateStore();
 export default class App extends Component {
   render() {
     return (
-      <ModuleProvider store={store}>
+      <ModuleProvider store={store} combineReducers={combineReducers}>
         <TodoList/>
       </ModuleProvider>
     );

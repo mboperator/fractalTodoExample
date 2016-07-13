@@ -1,4 +1,5 @@
 import { createModule } from 'redux-modules';
+import { loop, Effects } from 'redux-loop';
 import { Map } from 'immutable';
 import v4 from 'uuid';
 import { set } from '../../utils/fp';
@@ -10,8 +11,7 @@ export const { actions, reducer, constants, name } = createModule({
   initialState,
   transformations: [
     {
-      action: 'INIT',
-      payloadTypes: { },
+      type: 'INIT',
       middleware: [
         (_, { payload, meta }) => {
           const id = v4();
@@ -23,15 +23,24 @@ export const { actions, reducer, constants, name } = createModule({
         },
       ],
       reducer: (state, {payload}) => {
-        return payload || state;
+        return loop(
+          payload || state,
+          Effects.none()
+        )
       },
     },
     {
-      action: 'SET_DESCRIPTION',
-      payloadTypes: { },
+      type: 'SET_DESCRIPTION',
       reducer: (state, {payload: { description }}) => {
-        return { ...state, description };
+        return loop(
+          { ...state, description },
+          Effects.none()
+        );
       },
+    },
+    {
+      type: 'DESTROY',
+      reducer: state => loop({... state, deleted: true}, Effects.none()),
     },
   ],
 });

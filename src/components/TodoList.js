@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { getModel } from 'redux-loop';
 import { findDOMNode } from 'react-dom';
 import { List } from 'immutable';
 import TodoItem from './TodoItem';
@@ -7,7 +8,7 @@ import * as todoModule from '../modules/todos/reducer';
 
 const { array, func, number, shape } = PropTypes;
 
-const selector = state => { return { todoList: { collection: state.todoList } } };
+const selector = state => { return { todoList: { collection: getModel(state).todoList } } };
 
 @connectModule(selector, todoModule)
 export default class TodoList extends React.Component {
