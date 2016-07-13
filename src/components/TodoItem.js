@@ -3,7 +3,7 @@ import { connectModule } from 'redux-modules';
 import * as todoModule from '../modules/todo/reducer';
 
 
-const TodoItem = ({id, title, description, checked, todo: { actions }}) =>
+const TodoItem = ({ id, title, description, checked, actions }) =>
   <li>
     <div className="checkbox">
       <input

@@ -12,19 +12,19 @@ const selector = state => { return { todoList: { collection: state.todoList } } 
 @connectModule(selector, todoModule)
 export default class TodoList extends React.Component {
   static propTypes = {
-    todos: shape({
+    todoList: shape({
       collection: array,
-      actions: shape({
-        addToList: func,
-        removeFromList: func,
-        updateInList: func,
-      }),
+    }),
+    actions: shape({
+      addToList: func,
+      removeFromList: func,
+      updateInList: func,
     }),
   };
 
   render() {
-    const { title, todoList: todoProps = {} } = this.props;
-    const { collection = [], actions } = todoProps ;
+    const { title, todoList: todoProps = {}, actions } = this.props;
+    const { collection = [] } = todoProps ;
 
     return (
       <div>

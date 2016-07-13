@@ -1,4 +1,4 @@
-import { compose } from 'redux';
+import { compose, createStore, applyMiddleware } from 'redux';
 import { install } from 'redux-loop';
 import { fromJS, Map } from 'immutable';
 import createLogger from 'redux-logger';
@@ -15,4 +15,5 @@ export default function generateStore() {
     (state = Map()) => state,
     compose(applyMiddleware(logger), install())
   );
+  return store;
 }
