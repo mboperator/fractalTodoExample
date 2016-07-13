@@ -33,6 +33,5 @@ export const { actions, reducer, constants, name } = createModule({
         return { ...state, description };
       },
     },
-
   ],
 });
