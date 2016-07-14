@@ -13,7 +13,7 @@ const logger = createLogger({
 export default function generateStore() {
   const store = createStore(
     (state = Map()) => state,
-    compose(applyMiddleware(logger), install())
+    compose(install(), applyMiddleware(logger))
   );
   return store;
 }

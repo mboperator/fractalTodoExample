@@ -26,11 +26,14 @@ export default function list({reducer, actions, name}) {
         type: 'PERFORM_IN_LIST',
         reducer: (state, {payload: {id, action}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
-          const [nState] = reducer(state.get(idx), action);
+          const [nState, nEffect] = reducer(state.get(idx), action);
           const newParentState = state.set(idx, nState).set('_persisting', true);
           return loop(
             newParentState,
-            Effects.promise(persist, newParentState)
+            Effects.lift(nEffect, newAction => {
+              debugger;
+              return {type: `${name}List/PERFORM_IN_LIST`, payload: { id, action: newAction }};
+            })
           );
         },
       },
@@ -56,10 +59,10 @@ export default function list({reducer, actions, name}) {
         type: 'REMOVE_FROM_LIST',
         reducer: (state, {payload: {id}}) => {
           const idx = state.findIndex( item => get('id')(item) === id);
-          reducer(state.get(idx), actions.destroy());
+          const newState = state.remove(idx);
           return loop(
-            state.remove(idx),
-            Effects.none()
+            newState,
+            Effects.promise(persist, newParentState)
           );
         },
       },
@@ -72,7 +75,6 @@ export default function list({reducer, actions, name}) {
       .set('fractalTodos', state.toJS())
       .then(() => {
         const action = module.actions.persistSuccess({});
-        console.log('Persist', action);
         resolve(action);
       })
     )
